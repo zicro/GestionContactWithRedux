@@ -34,7 +34,22 @@ export default function(state = initialState, action){
          * */
             
             break;
-    
+        case 'DELETE_CONTACT': 
+            return {
+                ...state,
+                contacts: state.contacts.filter(contact => contact.id !== action.payload)
+
+        }
+        case 'ADD_CONTACT':
+            return {
+                ...state,
+                contacts: [
+                    // ...state.contacts // cette ecriture signifie qu'on veut seulement
+                    // les donnes qui se trouve dans le tableau contact et ne return pas
+                    // le tableau elle meme
+                    action.payload, ...state.contacts
+                ]
+            }    
         default:
             {
                 return state;
