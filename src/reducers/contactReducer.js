@@ -1,30 +1,18 @@
 const initialState = {
-    contacts: [
-        {
-            id: 1,
-            name: "test Toto",
-            email: "test@gmau.gg",
-            phone: "+966554412"
-        },
-        {
-            id: 2,
-            name: "2 test Toto",
-            email: "test@gmau.gg",
-            phone: "+966554412"
-        },
-        {
-            id: 3,
-            name: "3 test Toto",
-            email: "test@gmau.gg",
-            phone: "+966554412"
-        }
-    ]
+    // [] signifie un tableau d'objet
+    contacts: [],
+    // {} signifie un objet
+    contact: {}
+
 };
 
 export default function(state = initialState, action){
     switch (action.type) {
-        case 'GET_CONTACTS': {
-            return state;
+        case 'GET_CONTACTS': return {
+            ...state,
+            // on recupere les donnes et on lui affecte au tableau contacts
+            // via la methode payload, qui arrive from contactActions.js from (getContacts())
+            contacts: action.payload
         }
         // on peut aussi utiliser une deuxieme ecriture qui est
         /**
@@ -34,6 +22,10 @@ export default function(state = initialState, action){
          * */
             
             break;
+        case 'GET_CONTACT': return {
+            ...state,
+            contact: action.payload
+        }
         case 'DELETE_CONTACT': 
             return {
                 ...state,
@@ -49,6 +41,12 @@ export default function(state = initialState, action){
                     // le tableau elle meme
                     action.payload, ...state.contacts
                 ]
+            }
+        case 'EDIT_CONTACT':
+            return {
+                ...state,
+                contacts: state.contacts.map(contact => contact.id === action.payload.id ? 
+                    (contact = action.payload) : contact)
             }    
         default:
             {

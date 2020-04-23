@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
 import { connect } from 'react-redux';
 import { addContact } from '../../actions/contactActions';
-import uuid from 'uuid';
+
 
 class AddContact extends Component {
   state = {
@@ -34,8 +34,6 @@ class AddContact extends Component {
     }
 
     const newContact = {
-      // la method uuid(), permet de generer des id unique
-      id: uuid(),
       name,
       email,
       phone

@@ -1,7 +1,39 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
+import { connect } from 'react-redux';
+import { getContact, updateContact } from '../../actions/contactActions';
 
 class EditContact extends Component {
+
+  componentDidMount(){
+    // on recupere l'id 
+    const {id} = this.props.match.params;
+    this.props.getContact(id);
+  }
+
+  // pour envoyer les donnes vers la state qui va les affichers
+  // dans les champs des form (inputs)
+  componentWillReceiveProps(nextProps, nextState){
+    // on cree les memes nom avec celle dans les inputs
+    // on lui affecte les donnes recuperes par la methode (getContact())
+    const {name, email, phone} = nextProps.contact;
+    // on modifier les donnes de la state, ici on a name: name, 
+    // le meme nom pour la key/value, c'est pour ca qu'on a ecrit just name,
+    // mais l'ecriture esentiel est :
+    /***
+     * this.setState({
+      name: name,
+      email: email,
+      phone: phone
+    })
+     */
+    this.setState({
+      name,
+      email,
+      phone
+    })
+  }
+
   state = {
     name: '',
     email: '',
@@ -30,15 +62,20 @@ class EditContact extends Component {
       return;
     }
 
+
+
+    //// UPDATE CONTACT ////
+    const { id } = this.props.match.params;
     const updContact = {
+      id,
       name,
       email,
       phone
     };
 
-    const { id } = this.props.match.params;
+    
 
-    //// UPDATE CONTACT ////
+    this.props.updateContact(updContact);
 
     // Clear State
     this.setState({
@@ -98,4 +135,10 @@ class EditContact extends Component {
   }
 }
 
-export default EditContact;
+const mapStateToProps = (state) =>{
+  return {
+    contact: state.myContact.contact
+  }
+}
+
+export default connect(mapStateToProps, { getContact, updateContact })(EditContact);
